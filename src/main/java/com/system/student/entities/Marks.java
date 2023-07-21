@@ -23,6 +23,8 @@ import java.io.Serializable;
     @NamedQuery(name = "Marks.findByAverage", query = "SELECT m FROM Marks m WHERE m.average = :average"),
     @NamedQuery(name = "Marks.findByGrade", query = "SELECT m FROM Marks m WHERE m.grade = :grade")})
 public class Marks implements Serializable {
+    
+   private static Marks instance;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,11 +44,21 @@ public class Marks implements Serializable {
     @Column(name = "grade")
     private String grade;
     @JoinColumn(name = "student_id", referencedColumnName = "student_id")
-    @ManyToOne
-    private Student studentId;
-
-    public Marks() {
+  
+    @ManyToOne()
+      private Student studentId;
+   
+     private  Marks() {
     }
+    
+    public static Marks marksInstance(){
+    if(instance==null){
+      instance = new Marks();
+    }
+    return instance;
+    }
+
+   
 
     public Marks(Integer marksId) {
         this.marksId = marksId;

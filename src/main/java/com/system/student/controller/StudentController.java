@@ -37,10 +37,10 @@ public class StudentController {
         
     }
     
-    @DeleteMapping("/students")
-    public void deleteStudent() {
-        service.deleteAll();
-        return;
+    @DeleteMapping("/student/{id}")
+    public void deleteStudent(@PathVariable("id") Long studentId) {
+        service.deleteById(studentId);
+       
     }
 
 }

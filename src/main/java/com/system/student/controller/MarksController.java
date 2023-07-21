@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class MarksController {
 
+    Average average = Average.averageInstance();
+    Grader grade = Grader.gradeInstance();
+
     @Autowired
     IMarksService service;
 
@@ -36,29 +39,22 @@ public class MarksController {
 
     @PostMapping("/marks")
     public Marks addMarks(@RequestBody Marks marks) {
-        System.out.println(marks.getChemistry());
+        average.calculateAverage(marks);
+        grade.calculateGrade(average, marks);
         return service.save(marks);
     }
 
     @PatchMapping("/marks/{id}")
     public Marks patchMarks(@RequestBody Marks marks) {
-        System.out.println("");
         return service.save(marks);
 
     }
 
     @DeleteMapping("/marks/{id}")
-    public ResponseEntity<Marks> deleteMarks(@PathVariable("id") Long studentId) {
-        try {
-            Marks marks = service.deleteByStudentId(studentId);
-            if (marks.getStudentId() != null) {
-                return ResponseEntity.ok(marks);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public void deleteMarks(@PathVariable("id") Long marksId) {
+ 
+            service.deleteById(marksId);
+        
     }
 
 }

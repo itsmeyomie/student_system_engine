@@ -45,7 +45,7 @@ public class Student implements Serializable {
     public static Student studentInstance() {
 
         if (instance == null) {
-            return new Student();
+          instance=new Student();
         }
         return instance;
 

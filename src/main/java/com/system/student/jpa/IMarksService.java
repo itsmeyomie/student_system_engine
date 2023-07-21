@@ -21,8 +21,7 @@ public interface IMarksService extends JpaRepository<Marks, Long> {
     Marks findByStudentId(@Param("id") Long studentId);
     
     
-     @Query(value = "delete  FROM marks  WHERE student_id = :id", nativeQuery = true)
-    Marks deleteByStudentId(@Param("id") Long studentId);
+   
 }
 
 
