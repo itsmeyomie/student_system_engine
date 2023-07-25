@@ -24,10 +24,10 @@ public class MarksController {
     IMarksService service;
 
     @GetMapping("/marks/{id}")
-    public ResponseEntity<Marks> getStudentMarks(@PathVariable("id") Long studentId) {
+    public ResponseEntity<Marks> getMarks(@PathVariable("id") Long studentId) {
         try {
             Marks marks = service.findByStudentId(studentId);
-            if (marks.getStudentId() != null) {
+            if (marks != null) {
                 return ResponseEntity.ok(marks);
             } else {
                 return ResponseEntity.notFound().build();
@@ -44,17 +44,32 @@ public class MarksController {
         return service.save(marks);
     }
 
-    @PatchMapping("/marks/{id}")
-    public Marks patchMarks(@RequestBody Marks marks) {
-        return service.save(marks);
-
+    @PutMapping("/marks/{id}")
+    public ResponseEntity<Marks>editMarks(@PathVariable("id") Long studentId, @RequestBody Marks _marks) {
+        Marks marks = service.findByStudentId(studentId);
+        if (marks == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            if (_marks.getMaths() != null) {
+                marks.setMaths(_marks.getMaths());
+            }
+            if (_marks.getEnglish() != null) {
+                marks.setEnglish(_marks.getEnglish());
+            }
+            if (_marks.getChemistry() != null) {
+                marks.setChemistry(_marks.getChemistry());
+            }
+            average.calculateAverage(marks);
+            grade.calculateGrade(average, marks);
+        }
+        return new ResponseEntity<>(service.save(marks), HttpStatus.OK);
     }
 
     @DeleteMapping("/marks/{id}")
     public void deleteMarks(@PathVariable("id") Long marksId) {
- 
-            service.deleteById(marksId);
-        
+
+        service.deleteById(marksId);
+
     }
 
 }

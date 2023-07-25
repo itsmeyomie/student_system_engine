@@ -19,9 +19,6 @@ public interface IMarksService extends JpaRepository<Marks, Long> {
 
     @Query(value = "SELECT * FROM marks m WHERE m.student_id = :id", nativeQuery = true)
     Marks findByStudentId(@Param("id") Long studentId);
-    
-    
-   
 }
 
 
